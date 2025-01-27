@@ -5,26 +5,56 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-geist-sans: 'Geist Sans', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+[data-theme='dark'] {
+  --background: black;
+  --foreground: white;
+  canvas {
+    background-color: #101010;
+  }
+}
+
+@layer base {
+  h1 {
+    @apply text-[24px] font-bold;
+  }
+
+  h2 {
+    @apply text-[20px] font-semibold;
+  }
+
+  h3 {
+    @apply text-[18px] font-semibold;
+  }
+
+  p {
+    @apply text-[16px] font-normal;
+  }
+
+  @media (min-width: 1024px) {
+    h1 {
+      @apply text-[28px] font-bold;
+    }
+
+    h2 {
+      @apply text-[22px] font-semibold;
+    }
+
+    h3 {
+      @apply text-[16px] font-semibold;
+    }
+
+    p {
+      @apply text-[14px] font-normal;
+    }
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
 }
-/*canvas {*/
-/*  width:auto;*/
-/*  height:50rem;*/
-/*  */
-/*}*/
-
-
-
 

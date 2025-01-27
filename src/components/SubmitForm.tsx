@@ -32,12 +32,9 @@ export function SubmitForm() {
   };
 
   return (
-    <form
-      className="flex flex-row gap-4 lg:flex-row"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <>
-        <div className={"flex flex-col items-start gap-2"}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className={"flex flex-col lg:flex-row items-start gap-2"}>
+        <div className={"flex flex-col gap-1"}>
           <input
             placeholder={"Your name"}
             {...register("name", { required: true })}
@@ -48,15 +45,16 @@ export function SubmitForm() {
               Please, enter your name
             </p>
           )}
-          <button
-            type="submit"
-            onClick={() => setValue("buttonAction", "register")}
-            className="h-[2.5rem] w-full rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-800 sm:w-auto lg:w-[12rem]"
-          >
-            Register user
-          </button>
         </div>
-      </>
+        <button
+          type="submit"
+          onClick={() => setValue("buttonAction", "register")}
+          className="h-[2.5rem] w-full rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-800"
+        >
+          Register user
+        </button>
+      </div>
+
       {error}
     </form>
   );

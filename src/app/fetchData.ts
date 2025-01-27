@@ -30,8 +30,6 @@ export const getTheHeartRate = async (
 ): Promise<HeartRateResponse> => {
   const response = await fetch(HEART_RATE_URL + userName);
   if (!response.ok) {
-    //TODO:set error like in payload
-    // setError(`HTTP error! status: ${response.json()}`);
     throw new Error(`HTTP error! status: ${response.status}`);
   }
 

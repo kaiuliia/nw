@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { getTheHeartRate } from "@/app/fetchData";
 import { HeartRateMeasurement } from "@/types/heartRate";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import DarkmodeToggle from "@/components/DarkmodeToggle";
 
-const HEART_RATE_REFRESH_INTERVAL = 3000;
+const HEART_RATE_REFRESH_INTERVAL = 1000;
 
 export default function Dashboard() {
   const [measurements, setMeasurements] = useState<HeartRateMeasurement[]>([]);
@@ -73,10 +75,21 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div>
-      <p>Hello, {name}!</p>
+    <div className={"pt-20 px-5 flex flex-col text-center"}>
+      <h3>Hello, {name}!</h3>
+      <p> Here is your heart rate</p>
       <HeartRate measurements={measurements} />
-      <p>{error}</p>
+      <p className={"text-red-700"}>{error}</p>
+      {/*</div>*/}
+      <Link
+        className={
+          "dark:text-gray-200 absolute bottom-10 left-[50%] transform -translate-x-1/2"
+        }
+        onClick={() => localStorage.removeItem("username")}
+        href={"/"}
+      >
+        Logout
+      </Link>
     </div>
   );
 }
