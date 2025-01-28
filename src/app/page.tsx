@@ -2,16 +2,18 @@
 
 import { SubmitForm } from "@/components/SubmitForm";
 import { useRouter } from "next/navigation";
-import DarkmodeToggle from "@/components/DarkmodeToggle";
+import { useEffect } from "react";
 
 export default function Home() {
-  const name = localStorage.getItem("username");
   const { replace } = useRouter();
 
-  if (name) {
-    replace("/dashboard");
-    return;
-  }
+  useEffect(() => {
+    const name = localStorage.getItem("username");
+    if (name) {
+      replace("/dashboard");
+      return;
+    }
+  }, []);
 
   return (
     <div className={"p-20 flex flex-col gap-10"}>

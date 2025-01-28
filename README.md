@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## About
+
+This application is a simple heart rate tracker tool.
+
+- Enter a name to be able to enter a dashboard
+- When you logged in, the heart rate data will be automatically fetched every 2 seconds.
+- To stop it click the logout button,
+
 ## Getting Started
 
 First, run the development server:
@@ -14,9 +22,33 @@ pnpm dev
 bun dev
 ```
 
+### Unit tests
+
+Execute unit tests by running a command:
+
+```bash
+npm test
+```
+
+### Lint
+
+Execute lint by running a command:
+
+```bash
+npm run lint
+```
+
+### Format
+
+To reformat the code, run a command:
+
+```bash
+npm run format
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing any page, and the page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

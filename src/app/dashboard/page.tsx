@@ -6,81 +6,90 @@ import { getTheHeartRate } from "@/app/fetchData";
 import { HeartRateMeasurement } from "@/types/heartRate";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import DarkmodeToggle from "@/components/DarkmodeToggle";
+import { sortAndRemoveDuplicates } from "@/lib/heartRate";
 
-const HEART_RATE_REFRESH_INTERVAL = 1000;
+const HEART_RATE_REFRESH_INTERVAL = 2000;
+const DISPLAY_LAST_MILLISECONDS = 30000;
 
 export default function Dashboard() {
-  const [measurements, setMeasurements] = useState<HeartRateMeasurement[]>([]);
+  const [, setMeasurements] = useState<HeartRateMeasurement[]>([]);
+  const [minimumTimestamp, setMinimumTimestamp] = useState(
+    Date.now() - DISPLAY_LAST_MILLISECONDS,
+  );
+  const [displayedMeasurements, setDisplayedMeasurements] = useState<
+    HeartRateMeasurement[]
+  >([]);
   const [error, setError] = useState("");
   const { replace } = useRouter();
-  const name = localStorage.getItem("username");
-
-  const timestampCompare = (
-    measurementOne: HeartRateMeasurement,
-    measurementTwo: HeartRateMeasurement,
-  ): 0 | 1 | -1 => {
-    if (measurementOne.timestamp === measurementTwo.timestamp) {
-      return 0;
-    }
-
-    if (measurementOne.timestamp > measurementTwo.timestamp) {
-      return 1;
-    }
-
-    return -1;
-  };
-
-  const removeDuplicates = (
-    measurements: HeartRateMeasurement[],
-  ): HeartRateMeasurement[] => {
-    const map = new Map(measurements.map((m) => [m.timestamp, m.heartRate]));
-
-    return Array.from(
-      map.entries().map(
-        ([timestamp, heartRate]): HeartRateMeasurement => ({
-          timestamp,
-          heartRate,
-        }),
-      ),
-    ).sort(timestampCompare);
-  };
 
   const fetchNextHeartRateMeasurements = async (userName: string) => {
     try {
       const heartRate = await getTheHeartRate(userName);
-      measurements.push(...heartRate.measurements);
-      setMeasurements(removeDuplicates(measurements));
+      setMeasurements((prevMeasurements) => {
+        return sortAndRemoveDuplicates([
+          ...prevMeasurements,
+          ...heartRate.measurements,
+        ]);
+      });
       setError("");
     } catch (error: unknown) {
       setError(`Failed to get heart rate data: ${error}`);
     }
   };
 
-  const periodicallyFetchHeartRate = (userName: string) => {
-    fetchNextHeartRateMeasurements(userName);
-
-    setInterval(() => {
-      fetchNextHeartRateMeasurements(userName);
-    }, HEART_RATE_REFRESH_INTERVAL);
-  };
-
   useEffect(() => {
+    const name = localStorage.getItem("username");
+
     if (!name) {
       replace("/");
       return;
     }
 
-    periodicallyFetchHeartRate(name);
+    fetchNextHeartRateMeasurements(name);
+
+    const interval = setInterval(() => {
+      fetchNextHeartRateMeasurements(name);
+    }, HEART_RATE_REFRESH_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMeasurements((prevMeasurements) => {
+        if (prevMeasurements.length === 0) return prevMeasurements;
+
+        const next = prevMeasurements[0];
+        const rest = prevMeasurements.slice(1);
+
+        setDisplayedMeasurements((prevDisplayed) => {
+          if (
+            prevDisplayed.length > 0 &&
+            prevDisplayed[prevDisplayed.length - 1].timestamp === next.timestamp
+          ) {
+            return prevDisplayed;
+          }
+
+          return sortAndRemoveDuplicates([...prevDisplayed, next]);
+        });
+
+        return rest;
+      });
+
+      setMinimumTimestamp(Date.now() - DISPLAY_LAST_MILLISECONDS);
+    }, 250);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <div className={"pt-20 px-5 flex flex-col text-center"}>
-      <h3>Hello, {name}!</h3>
       <p> Here is your heart rate</p>
-      <HeartRate measurements={measurements} />
+      <HeartRate
+        measurements={displayedMeasurements}
+        minimumTimestamp={minimumTimestamp}
+      />
       <p className={"text-red-700"}>{error}</p>
-      {/*</div>*/}
       <Link
         className={
           "dark:text-gray-200 absolute bottom-10 left-[50%] transform -translate-x-1/2"
