@@ -1,3 +1,0 @@
-describe("sortAndRemoveDuplicates", () => {
-  it("sorts");
-});
