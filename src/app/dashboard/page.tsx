@@ -32,8 +32,8 @@ export default function Dashboard() {
         ]);
       });
       setError("");
-    } catch (error: unknown) {
-      setError(`Failed to get heart rate data: ${error}`);
+    } catch {
+      setError("Failed to get heart rate data");
     }
   };
 

@@ -22,8 +22,8 @@ export function SubmitForm() {
       await registerNewUser(name);
       localStorage.setItem("username", name);
       replace("/dashboard");
-    } catch (error: unknown) {
-      setError(`Registration failed: ${error}`);
+    } catch {
+      setError("Registration failed");
     }
   };
 
