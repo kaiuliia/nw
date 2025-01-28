@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmitForm } from "@/components/SubmitForm";
+import { SubmitForm } from "@/components/submitForm";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

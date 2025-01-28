@@ -1,8 +1,8 @@
 "use client";
 
-import { HeartRate } from "@/components/HeartRate";
+import { HeartRate } from "@/components/heartRate";
 import { useEffect, useState } from "react";
-import { getTheHeartRate } from "@/app/fetchData";
+import { getTheHeartRate } from "@/lib/actions/register";
 import { HeartRateMeasurement } from "@/types/heartRate";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

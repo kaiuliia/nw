@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
-import { registerNewUser } from "@/app/fetchData";
+import { registerNewUser } from "@/lib/actions/register";
 import { useRouter } from "next/navigation";
 interface UserFormInput {
   name: string;

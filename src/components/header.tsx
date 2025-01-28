@@ -1,5 +1,5 @@
 "use client";
-import DarkmodeToggle from "@/components/DarkmodeToggle";
+import DarkmodeToggle from "@/components/darkmodeToggle";
 
 export function Header() {
   return (
